@@ -1,6 +1,6 @@
 <?php
 $params = require __DIR__ . '/params.php';
-$db = require __DIR__ . '/test_db.php';
+$db = require __DIR__ . '/db.php';
 
 /**
  * Application configuration shared by all test types
@@ -22,10 +22,10 @@ return [
             'basePath' => __DIR__ . '/../web/assets',
         ],
         'urlManager' => [
-            'showScriptName' => true,
-        ],
-        'user' => [
-            'identityClass' => 'app\models\User',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+            ],
         ],
         'request' => [
             'cookieValidationKey' => 'test',
@@ -36,6 +36,15 @@ return [
                 'domain' => 'localhost',
             ],
             */
+        ],
+    ],
+    'modules' => [
+        'user' => [
+            'class' => 'dektrium\user\Module',
+            'enableUnconfirmedLogin' => true,
+            'enableConfirmation' => true,
+            'confirmWithin' => 21600,
+            'cost' => 12,
         ],
     ],
     'params' => $params,
