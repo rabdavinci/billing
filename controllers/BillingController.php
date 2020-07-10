@@ -6,8 +6,11 @@ use Yii;
 use app\models\Billing;
 use app\models\BillingSearch;
 use yii\web\Controller;
+use yii\filters\AccessControl;
+use dektrium\user\filters\AccessRule;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+
 
 /**
  * BillingController implements the CRUD actions for Billing model.
@@ -18,17 +21,28 @@ class BillingController extends Controller
      * {@inheritdoc}
      */
     public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
+	{
+		return [
+			'access' => [
+			    'class' => AccessControl::className(),
+			    'ruleConfig' => [
+			        'class' => AccessRule::className(),
+			    ],
+			    'rules' => [
+			        [
+			            'actions' => ['index', 'view'],
+			            'allow' => true,
+			        ],
+                    [
+			            'actions' => ['create', 'update', 'delete'],
+			            'allow' => true,
+			            'roles' => ['@'],
+			        ],
+			    ],
+			],
+		];
+	}
+    
     /**
      * Lists all Billing models.
      * @return mixed
